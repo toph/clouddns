@@ -31,7 +31,7 @@ module Clouddns
     def changes
       return @changes if @changes
       @changes = []
-      fog_records = Hash[@fog_zone.records.map {|r| [[fog_record_name(r), r.type], r] } ]
+      fog_records = Hash[@fog_zone.records.all!.map {|r| [[fog_record_name(r), r.type], r] } ]
       @zone.records.each do |record|
         if (fog_record = fog_records.delete([record.name, record.type]))
           if records_equal?(record, fog_record)
